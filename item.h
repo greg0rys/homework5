@@ -20,6 +20,8 @@ class item
 		unsigned int getQuantity() const;
 		void setPrice(float); 
 		float getPrice() const;
+        int getWordLength() const;
+        void printData();
 	private:
 		char * data;
 		unsigned int quantity;
