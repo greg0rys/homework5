@@ -9,14 +9,19 @@ item::item()
 
 }
 
-// custom constructor
-item::item(const char *name, unsigned int quantity, float price)
+item::item(char * name)
 {
-	if(data)
-	{
-		delete []data;
-	}
-	data = new char[strlen(name) + 1];
+    data = new char[strlen(name) + 1]{0};
+    strcpy(data, name);
+    quantity = 0;
+    price = 0.00;
+
+}
+
+// custom constructor
+item::item(const char *name,  int quantity, float price)
+{
+	this->data = new char[strlen(name) + 1];
 	strcpy(data,name);
 	this->quantity = quantity;
 	this->price = price;
@@ -78,15 +83,20 @@ void item::setName(const char *name)
 
 void item::getName(char * name) const
 {
+    if(!name)
+    {
+        name = new char[strlen(data) + 1];
+    }
+
     strcpy(name, data);
 }
 
-void item::setQuantity(unsigned int num)
+void item::setQuantity(int num)
 {
     quantity = num;
 }
 
-unsigned int item::getQuantity() const
+ int item::getQuantity() const
 {
     return quantity;
 }
@@ -108,7 +118,7 @@ int item::getWordLength() const
 
 void item::printData()
 {
-    cout.precision(2);
-    cout << data << "(" << quantity << " at " << "$" << price
-        << ") Total Cost: $" << (price * quantity) << endl;
+    cout << endl;
+    cout << data << " (" << quantity << " at " << "$" << price
+    << ") Total Cost: $" << (price * quantity)   << endl;
 }

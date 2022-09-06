@@ -1,5 +1,6 @@
 #pragma once
 #include "item.h"
+#include "main.h"
 #include <iostream>
 #include <cstring>
 #include <cctype>
@@ -55,12 +56,14 @@ public:
     int getSize() const; // get the size of this linked list.
 	void updateNode(); // helper for the menu delete options.
     void updateByName(const char * name);
-    void updateByQuantity(unsigned int quantity);
-    void updateByPrice(float price);
+    void updateByQuantity();
+    void updateByPrice();
 	void deleteNode();
 	void deleteByName(const char *);
 	void deleteByQuantity(unsigned int);
 	void deleteByPrice(float );
+    void eraseList();
+    void getTotalListCost();
 
 
 
