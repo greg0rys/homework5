@@ -552,6 +552,8 @@ void list::deleteByQuantity()
 
 
 
+
+
         // if we found our match delete it and decrement the lists size.
         if(temp == index)
         {
@@ -566,19 +568,19 @@ void list::deleteByQuantity()
             size--;
         }
 
+
         // advance curr so we can check the other nodes in the list with the inner
         // loop for more matches to the searchQty.
         curr = curr->next;
 
     }
 
-    // if counter = 0 then we have no matches, out put a not found message and
-    // return from this function.
     if(counter == 0)
     {
-        cout << "No item(s) found with quantity: " << searchQty << endl;
+        cout << "No item(s) found for: " << searchQty << endl;
         return;
     }
+
     cout << "Deleted " << counter << " item(s) with the quantity: " << searchQty << endl;
 
 
