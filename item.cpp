@@ -70,12 +70,13 @@ item::~item()
 	data = nullptr;
 }
 
-void item::setName(const char *name)
+void item::setName( char *name)
 {
     if(data)
     {
         delete []data;
     }
+    name[0] = toupper(name[0]);
 
     data = new char[strlen(name) + 1];
     strcpy(data, name);

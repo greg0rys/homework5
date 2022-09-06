@@ -15,7 +15,7 @@ class item
 		item & operator=(const item &);
         item( char *);
 		~item();
-		void setName(const char *);
+		void setName( char *);
 		void getName(char *) const;
 		void setQuantity(int);
         int getQuantity() const;

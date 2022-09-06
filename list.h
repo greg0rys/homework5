@@ -60,8 +60,8 @@ public:
     void updateByPrice();
 	void deleteNode();
 	void deleteByName(const char *);
-	void deleteByQuantity(unsigned int);
-	void deleteByPrice(float );
+	void deleteByQuantity();
+	void deleteByPrice();
     void eraseList();
     void getTotalListCost();
 
