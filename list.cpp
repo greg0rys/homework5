@@ -494,13 +494,11 @@ void list::deleteByName(const char * target)
 
 /**
  * since our list can contain many items with the same qty
- * we need to loop through the list while it isn't null and while we still have
- * nodes that match the target
- * we need the inner loop to then do the deletion of those nodes and reset the pointers
- * while the outer loop continues to progress us through the list.
- * this way we can keep looping through our list, and deleting any matches.
- * after the inner loop breaks, we advanced curr so that way it will loop again
- * causing the inner loop to check the other nodes in the list for matches.
+ * use an outerloop that loops until it reaches the size of the current list.
+ * for each outerloop iteration, use an inner while loop to check each node
+ * from the begining for a match. if there is a match delete it and rest the pointers
+ * then allow the outerloop to iterate again causing the inner loop to
+ * check each item in our newly updated list for any other matches.
  */
 void list::deleteByQuantity()
 {
@@ -525,18 +523,20 @@ void list::deleteByQuantity()
         cin.ignore(101, '\n');
     }
 
-    while(curr)
+    // loop through our list, for each iteration reset head to point to the first
+    // item in the list, and check each item for a match to searchqty. Ending the outerloop when
+    // we have gone through every item in the list.
+    for(auto i = 0; i < size; i++)
     {
 
 
 
         node * temp = index;
 
-        // while we still have items to loop through use another
-        // copy of our list to delete the matches and reset the pointers.
-        // this nested loop will break out each time there is a match
-        // so using the outerloop we can start over again, checking the remaining
-        // nodes for a match.
+        // for each iteration of the outerloop check each node starting from the first
+        // for a match, if its a match break out of this inner loop, delete it, reset the pointers
+        // then allow the outerloop to continue, so we can check our newly updated list
+        // for any other matches to the target.
         while(temp)
         {
             currentItemQty = temp->data->getQuantity();
@@ -554,6 +554,11 @@ void list::deleteByQuantity()
 
 
 
+        if(!temp)
+        {
+            cout << "No item(s) found for: " << searchQty << endl;
+            return;
+        }
         // if we found our match delete it and decrement the lists size.
         if(temp == index)
         {
@@ -569,18 +574,9 @@ void list::deleteByQuantity()
         }
 
 
-        // advance curr so we can check the other nodes in the list with the inner
-        // loop for more matches to the searchQty.
-        curr = curr->next;
-
     }
 
-    if(counter == 0)
-    {
-        cout << "No item(s) found for: " << searchQty << endl;
-        return;
-    }
-
+    cout << endl;
     cout << "Deleted " << counter << " item(s) with the quantity: " << searchQty << endl;
 
 
@@ -588,7 +584,69 @@ void list::deleteByQuantity()
 
 void list::deleteByPrice()
 {
-    cout << "Price remove: " << endl;
+    node * curr = nullptr;
+    node * prev = nullptr;
+    float searchPrice = 0.00;
+    float itemPrice = 0.00;
+    int counter = 0;
+
+    cout.precision(2);
+    cout << "Enter a search price: ";
+    cin >> searchPrice;
+    cin.ignore(101, '\n');
+
+    while(cin.fail())
+    {
+        cin.clear();
+        cin.ignore(101, '\n');
+
+        cout << "Invalid input, please enter price in the format '\' xx.xx '\'" << endl;
+        cout << "Enter a search price: ";
+        cin >> searchPrice;
+        cin.ignore(101, '\n');
+    }
+
+    //outer loop to keep looping through the newly updated list to delete any other matches
+
+    for(auto k = 0; k < size; k++)
+    {
+        curr = index; // set current back to the start of the list each iteration
+
+        // check each node for a match. find it? delete and check others, no? err message
+        while(curr)
+        {
+            itemPrice = curr->data->getPrice();
+            if(itemPrice == searchPrice)
+            {
+                counter++;
+                break;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+
+        if(!curr)
+        {
+            cout << "No item(s) found for the search price: $" << searchPrice << endl;
+            return;
+        }
+
+        if(curr == index)
+        {
+            index = index->next;
+            delete curr;
+            size--;
+        }
+        else
+        {
+            prev->next = curr->next;
+            delete curr;
+            size--;
+        }
+    }
+
+
+    cout << "Deleted " << counter  << " item(s) with the search price: $"  << searchPrice << endl;
 }
 
 // print the total cost and size of the list.
