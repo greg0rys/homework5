@@ -13,7 +13,8 @@ private:
 
     struct node
     {
-        //because our node has a pointer data member we MUST use constructors to allocate its data and deallocate at
+        //because our node has a pointer data member we MUST use constructors
+        // to allocate its data and deallocate at
         // deletion
 
         //default node constructor
@@ -63,7 +64,7 @@ public:
 	void deleteByQuantity();
 	void deleteByPrice();
     void eraseList();
-    void getTotalListCost();
+    float getTotalListCost();
 
 
 

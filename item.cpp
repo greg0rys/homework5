@@ -76,6 +76,7 @@ void item::setName( char *name)
     {
         delete []data;
     }
+    // upcase the first letter of all the items in our list.
     name[0] = toupper(name[0]);
 
     data = new char[strlen(name) + 1];
@@ -84,6 +85,7 @@ void item::setName( char *name)
 
 void item::getName(char * name) const
 {
+    // make sure that the param isn't null, if it is make it big enough.
     if(!name)
     {
         name = new char[strlen(data) + 1];
@@ -119,7 +121,13 @@ int item::getWordLength() const
 
 void item::printData()
 {
+
     cout << endl;
-    cout << data << " (" << quantity << " at " << "$" << price
-    << ") Total Cost: $" << (price * quantity)   << endl;
+    cout  << data << " (" << quantity
+    << " at " <<
+    "$" << price
+    << ") Total Cost: $";
+    cout  <<
+    (price *
+    quantity)  << endl;
 }

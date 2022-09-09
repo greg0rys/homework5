@@ -126,25 +126,11 @@ void list::insertNode(item &aItem) {
     delete []paramWord;
 }
 
-int list::getSize() const { return size; }
 
 /**
- * print all of the items in our list, along with lists size, and total cost.
+ * list update functions
  */
-void list::printList() {
-    node *curr;
-    if(index == nullptr)
-    {
-        cout << "List is empty, nothing to print!" << endl;
-        return;
-    }
 
-    for (curr = index; curr; curr = curr->next) {
-        curr->data->printData();
-    }
-
-    getTotalListCost();
-}
 
 /**
  * director function -> calls proper update method.
@@ -166,11 +152,14 @@ void list::updateNode() {
         cout << "Enter a match criterion: 1 for name, 2 for qty, 3 for price: ";
         cin >> option;
         cin.ignore(101, '\n');
+
+        // handle incorrect input from the user without crashing.
         while(cin.fail())
         {
             cin.clear(); //clear input stream error state
             cin.ignore(101, '\n'); // throw out the bad input
-            cout << "You have entered invalid input, please input a number choice" << endl;
+            cout << "You have entered invalid input, please input a number choice"
+                 << endl;
             cout << "Enter Option: ";
             cin >> option;
             cin.ignore(101, '\n');
@@ -192,7 +181,8 @@ void list::updateNode() {
                 option = 0;
                 break;
             default:
-                cout << option << " is not a valid choice, please try again: " << endl;
+                cout << option << " is not a valid choice, please try again: "
+                               << endl;
                 break;
 
         }
@@ -204,28 +194,8 @@ void list::updateNode() {
     }
 }
 
-/**
- * erase all the items in our list, once erased set index to null pointer
- * to guard against double delete at class destruction
- */
-void list::eraseList()
-{
-    node * curr = index;
-    while(curr)
-    {
-        node * temp = curr->next;
-        delete curr;
-        curr = temp;
-    }
-
-    //set the head pointer of our list to nullptr so when its destructor is called
-    // curr will be null, so it won't delete twice.
-    index = nullptr;
-    cout << "Shopping list has been erased!" << endl;
-}
-
 // update an item by name.
-void list::updateByName(const char *name)
+void list::updateByName(const char * name)
 {
     node * curr = index;
     char * itemName = nullptr;
@@ -262,7 +232,8 @@ void list::updateByName(const char *name)
 
     if(found)
     {
-        cout << counter << " item(s) had their name changed to: " << itemName << endl;
+        cout << counter << " item(s) had their name changed to: " << itemName
+             << endl;
     }
 
     if(itemName)
@@ -291,12 +262,14 @@ void list::updateByPrice()
     cin >> newPrice;
     cin.ignore(101,'\n');
 
-    // gaurd against invalid input, if there is an error throw all the input away and start over.
+    // gaurd against invalid input, if there is an error
+    // throw all the input away and start over.
     while(cin.fail())
     {
         cin.clear(); //clear input stream error state
         cin.ignore(101, '\n'); // throw out the bad input
-        cout << "You have entered invalid input, please enter a price like (25.97)" << endl;
+        cout << "You have entered invalid input, please enter a price"
+             << "like (25.97)" << endl;
         cout << "Enter a search price: ";
         cin >> searchprice;
         cin.ignore(101, '\n');
@@ -326,7 +299,8 @@ void list::updateByPrice()
 
     if(found)
     {
-        cout << counter << " items had their price changed to: $" << newPrice << endl;
+        cout << counter << " items had their price changed to: $"
+                        << newPrice << endl;
     }
 
 }
@@ -350,7 +324,8 @@ void list::updateByQuantity()
     {
         cin.clear(); //clear input stream error state
         cin.ignore(101, '\n'); // throw out the bad input
-        cout << "You have entered invalid input, please enter a whole quantity" << endl;
+        cout << "You have entered invalid input, please enter a whole quantity"
+             << endl;
         cout << "Enter Quantity: ";
         cin >> searchQuantity;
         cin.ignore(101, '\n');
@@ -376,9 +351,15 @@ void list::updateByQuantity()
 
     if(found)
     {
-        cout << counter << " items had their quantity changed to: " << newQuantity << endl;
+        cout << counter << " items had their quantity changed to: "
+                        << newQuantity << endl;
     }
 }
+
+
+/**
+ * list delete functions.
+ */
 
 /**
  * director function -> calls proper delete method.
@@ -403,7 +384,9 @@ void list::deleteNode() {
         {
             cin.clear(); //clear input stream error state
             cin.ignore(101, '\n'); // throw out the bad input
-            cout << "You have entered invalid input, please input a number choice" << endl;
+            cout << "You have entered invalid input,"
+                 <<"please input a number choice"
+                 << endl;
             cout << "Enter Option: ";
             cin >> option;
             cin.ignore(101, '\n');
@@ -425,7 +408,8 @@ void list::deleteNode() {
                 option = 0;
                 break;
             default:
-                cout << option << " is not a valid choice, please try again: " << endl;
+                cout << option << " is not a valid choice, please try again: "
+                     << endl;
                 break;
 
         }
@@ -469,7 +453,8 @@ void list::deleteByName(const char * target)
 
     if(!curr)
     {
-        cout << "No matching item name found in the list for: " << target << endl;
+        cout << "No matching item name found in the list for: "
+             << target << endl;
         return;
     }
 
@@ -494,10 +479,11 @@ void list::deleteByName(const char * target)
 
 /**
  * since our list can contain many items with the same qty
- * use an outerloop that loops until it reaches the size of the current list.
- * for each outerloop iteration, use an inner while loop to check each node
- * from the begining for a match. if there is a match delete it and rest the pointers
- * then allow the outerloop to iterate again causing the inner loop to
+ * use an outer-loop that loops until it reaches the size of the current list.
+ * for each outer-loop iteration, use an inner while loop to check each node
+ * from the beginning for a match. if there is a match delete it
+ * and reset the pointers
+ * then allow the outer-loop to iterate again causing the inner loop to
  * check each item in our newly updated list for any other matches.
  */
 void list::deleteByQuantity()
@@ -523,8 +509,9 @@ void list::deleteByQuantity()
         cin.ignore(101, '\n');
     }
 
-    // loop through our list, for each iteration reset head to point to the first
-    // item in the list, and check each item for a match to searchqty. Ending the outerloop when
+    // loop through our list, for each iteration reset head to point to the
+    // first item in the list, and check each item for a match to search-qty.
+    // Ending the outer-loop when
     // we have gone through every item in the list.
     for(auto i = 0; i < size; i++)
     {
@@ -533,9 +520,12 @@ void list::deleteByQuantity()
 
         node * temp = index;
 
-        // for each iteration of the outerloop check each node starting from the first
-        // for a match, if its a match break out of this inner loop, delete it, reset the pointers
-        // then allow the outerloop to continue, so we can check our newly updated list
+        // for each iteration of the outer-loop check each node
+        // starting from the first
+        // for a match, if it's a match break out of this inner loop,
+        // delete it, reset the pointers
+        // then allow the outer-loop to continue,
+        // so we can check our newly updated list
         // for any other matches to the target.
         while(temp)
         {
@@ -577,7 +567,8 @@ void list::deleteByQuantity()
     }
 
     cout << endl;
-    cout << "Deleted " << counter << " item(s) with the quantity: " << searchQty << endl;
+    cout << "Deleted " << counter << " item(s) with the quantity: "
+         << searchQty << endl;
 
 
 }
@@ -600,19 +591,23 @@ void list::deleteByPrice()
         cin.clear();
         cin.ignore(101, '\n');
 
-        cout << "Invalid input, please enter price in the format '\' xx.xx '\'" << endl;
+        cout << "Invalid input, please enter price in the format '\' xx.xx '\'"
+             << endl;
         cout << "Enter a search price: ";
         cin >> searchPrice;
         cin.ignore(101, '\n');
     }
 
-    //outer loop to keep looping through the newly updated list to delete any other matches
+    //outer loop to keep looping through the newly updated list
+    // to delete any other matches
 
     for(auto k = 0; k < size; k++)
     {
-        curr = index; // set current back to the start of the list each iteration
+        // set current back to the start of the list each iteration
+        curr = index;
 
-        // check each node for a match. find it? delete and check others, no? err message
+        // check each node for a match. find it? delete and check others,
+        // no? err message
         while(curr)
         {
             itemPrice = curr->data->getPrice();
@@ -627,7 +622,8 @@ void list::deleteByPrice()
 
         if(!curr)
         {
-            cout << "No item(s) found for the search price: $" << searchPrice << endl;
+            cout << "No item(s) found for the search price: $" << searchPrice
+                 << endl;
             return;
         }
 
@@ -646,28 +642,85 @@ void list::deleteByPrice()
     }
 
 
-    cout << "Deleted " << counter  << " item(s) with the search price: $"  << searchPrice << endl;
+    cout << "Deleted " << counter  << " item(s) with the search price: $"
+         << searchPrice << endl;
 }
 
-// print the total cost and size of the list.
-void list::getTotalListCost()
+/**
+ * list printing and erasing functions.
+ */
+
+/**
+ * print all of the items in our list, along with lists size, and total cost.
+ */
+void list::printList() {
+    node *curr;
+//    std::cout.setf( std::ios::fixed, std:: ios::floatfield );
+//    cout.precision(2);
+    float listTotal = getTotalListCost();
+    if(index == nullptr)
+    {
+        cout << "List is empty, nothing to print!" << endl;
+        return;
+    }
+    cout << "The list has: " << getSize() << " item(s) with a total cost of: $"
+         << listTotal << endl;
+
+    for (curr = index; curr; curr = curr->next) {
+        curr->data->printData();
+    }
+
+}
+
+/**
+ * erase all the items in our list, once erased set index to null pointer
+ * to guard against double delete at class destruction
+ */
+void list::eraseList()
+{
+    node * curr = index;
+    while(curr)
+    {
+        node * temp = curr->next;
+        delete curr;
+        curr = temp;
+    }
+
+    //set the head pointer of our list to nullptr so when its destructor is called
+    // curr will be null, so it won't delete twice.
+    index = nullptr;
+    cout << "Shopping list has been erased!" << endl;
+}
+
+/**
+ * helper functions
+ */
+
+// return the total list price.
+float list::getTotalListCost()
 {
 
     float total = 0.00;
+    int qty = 0;
+    float itemCost = 0.00;
 
     node * curr;
     for(curr = index; curr; curr = curr->next)
     {
-        int qty = 0;
-        float itemCost = 0.00;
         qty = curr->data->getQuantity();
         itemCost = curr->data->getPrice();
 
-        total += itemCost * qty;
+        total += (qty * itemCost);
     }
 
-    cout << endl;
-    cout << "list has " << size << " item(s) with a total of: $" << total << endl;
+    return total;
 
 
+
+}
+
+// get the current size of our list.
+int list::getSize() const
+{
+    return size;
 }

@@ -2,10 +2,13 @@
 
 int main()
 {
+    // set the precision and format the floats and the start of the program
+    // this way floating point numbers are shown with 2 digits after the deci
+    cout.setf( std::ios::fixed, std:: ios::floatfield );
+    cout.precision(2);
     cout << "Welcome to Shopping List Maintenance!" << endl;
     menu();
-
-    cout << "Thanks for using me! " << endl;
+    exitMessage();
 	return 0;
 }
 
@@ -37,6 +40,8 @@ void getChars(char *& text)
 		else
 		{
 			wordSize = strlen(input);
+            // +2 so we can get the letter plus have enough space to append
+            // cstrings null node terminator to the end.
             temp = new char[wordSize + 2]{0};
 			strcpy(temp, input);
 			delete []input;
@@ -51,6 +56,9 @@ void getChars(char *& text)
 	}
 
 
+    // manager the pointer passed in, if it isn't null
+    // delete it and make enough room for the users input
+    // if it is null make it big enough for user input.
     if(!text)
     {
         text = new char[strlen(input) + 1];
@@ -61,13 +69,16 @@ void getChars(char *& text)
         delete []text;
         text = new char[strlen(temp) + 1];
     }
+    // copy the users input into the passed in pointer.
     strcpy(text, input);
+    // get rid of our dynamic input pointer.
     delete []input;
 
 
 }
 
 // menu of choice for the user.
+//
 int menu()
 {
     int choice = 0;
@@ -78,12 +89,14 @@ int menu()
     {
         cout << endl;
         cout << "Please select from one of the following options: " << endl;
-        cout << "1 -\tQuit the program" << endl;
-        cout << "2 -\tErase all items from the list (resulting in an empty list)" << endl;
-        cout << "3 -\tAdd an item to the list" << endl;
-        cout << "4 -\tRemove an item from the list" << endl;
-        cout << "5 -\tUpdate an item in the list" << endl;
-        cout << "6 -\tDisplay all items in the list" << endl;
+        cout << "1-\tQuit the program" << endl;
+        cout << "2-\tErase all items from the list (resulting in an empty list)"
+             << endl;
+        cout << "3-\tAdd an item to the list" << endl;
+        cout << "4-\tRemove an item from the list" << endl;
+        cout << "5-\tUpdate an item in the list" << endl;
+
+        cout << "6-\tDisplay all items in the list" << endl;
         cout << "Enter Option: ";
         cin >> choice;
         cout << endl;
@@ -94,7 +107,8 @@ int menu()
         {
             cin.clear(); //clear input stream error state
             cin.ignore(101, '\n'); // throw out the bad input
-            cout << "You have entered invalid input, please input a number choice" << endl;
+            cout << "You have entered invalid input, please input a number "
+                 << "choice" << endl;
             cout << "Enter Option: ";
             cin >> choice;
         }
@@ -169,4 +183,17 @@ void getItemInfo(item *&newItem)
     newItem->setQuantity(itemCount);
     delete []itemName;
 
+}
+
+// tell the user goodbye
+void exitMessage()
+{
+
+    cout.width(50);
+    cout.fill('*');
+    cout << " Thank you! for using me ";
+    cout.width(50);
+    cout.fill('*');
+    cout << " ";
+    cout << endl << "[ done ]" << endl;
 }
